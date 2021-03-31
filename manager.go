@@ -1,4 +1,4 @@
-package main
+package ffmpegwriter
 
 import (
 	"fmt"
@@ -9,7 +9,9 @@ import (
 	"sync"
 )
 
-var FfmpegExecutable = "ffmpeg"
+var Executable = "ffmpeg"
+
+const DefaultCRF = 20
 
 type Manager struct {
 	frameChannel chan *image.RGBA
@@ -29,7 +31,7 @@ func OpenVideo(filename string, rate, width, height, crf int) (*Manager, error) 
 	}
 
 	cmd := exec.Command(
-		FfmpegExecutable,
+		Executable,
 		"-y",             // overwrite
 		"-f", "rawvideo", // stream bitmap data over STDIN
 		"-pix_fmt", "rgba", // this lets us write directly from the image.RGBA pixels
